@@ -60,6 +60,19 @@ st.markdown("## Gold Price Forecast")
 st.caption("Short-term gold return forecasting using technical and macroeconomic indicators")
 st.markdown("### 7-Day Gold Return Prediction")
 
+col_refresh, col_time = st.columns([1, 3])
+
+with col_refresh:
+    if st.button("Refresh Data"):
+        st.rerun()
+
+
+from datetime import datetime
+
+with col_time:
+    st.caption(f"Last updated: {datetime.now().strftime('%d %b %Y, %H:%M:%S')}")
+
+
 latest_df = get_latest_features()
 pred_return = predict_return(latest_df)
 
@@ -72,6 +85,18 @@ with st.container():
     col1.metric("Last Gold Price", f"${last_price:.2f}")
     col2.metric("Predicted 7-Day Return", f"{pred_return*100:.2f}%")
     col3.metric("Predicted Price (7d)", f"${pred_price:.2f}")
+
+st.markdown("""
+<div style="background-color:#111827;padding:15px 20px;border-radius:8px;border:1px solid #1f2937;">
+<b>Prediction Context</b><br>
+The model estimates the expected percentage return of gold over the next 7 trading days based on current market conditions and recent price behavior.  
+This reflects short-term directional tendencies, not long-term valuation.
+</div>
+""", unsafe_allow_html=True)
+
+
+st.caption("Model confidence varies depending on market volatility and macroeconomic stability.")
+
 
 st.markdown("---")
 st.markdown("### Gold Price Trend — Last 12 Months")
@@ -123,6 +148,15 @@ m1.metric("💵 USD Index", f"{usd_last:.2f}")
 m2.metric("📉 VIX (Volatility)", f"{vix_last:.2f}")
 m3.metric("🏦 US 10Y Yield", f"{yield_last:.2f}%")
 m4.metric("🛢 Oil Price", f"${oil_last:.2f}")
+
+st.markdown("### Model Limitations")
+
+st.markdown("""
+- Predictions are based on historical patterns and may not capture sudden macroeconomic shocks  
+- The model does not account for geopolitical events or unexpected policy changes  
+- Outputs should be interpreted as probabilistic signals, not financial advice  
+""")
+
 
 st.markdown("---")
 st.caption("Data sourced from Yahoo Finance. Model predictions are for educational and research purposes only.")
